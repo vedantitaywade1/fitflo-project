@@ -9,12 +9,10 @@ exports.addPeriod = async (req, res, next) => {
     const userId = req.user.id;
 
     if (!start_date || !end_date) {
-      return res.status(400).json({
-        message: "Start and end date are required",
-      });
+      return res.status(400).json({ message: "Start and end date are required" });
     }
 
-    const result = await addPeriodService(
+    const periodId = await addPeriodService(
       userId,
       start_date,
       end_date,
@@ -24,10 +22,10 @@ exports.addPeriod = async (req, res, next) => {
 
     res.status(201).json({
       message: "Period data added successfully",
-      periodId: result.insertId,
+      periodId,
     });
-  } catch (err) {
-    next(err); // goes to errorMiddleware
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -36,7 +34,7 @@ exports.getMyPeriods = async (req, res, next) => {
     const userId = req.user.id;
     const periods = await getMyPeriodsService(userId);
     res.status(200).json(periods);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
